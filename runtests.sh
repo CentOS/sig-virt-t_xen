@@ -29,6 +29,7 @@ for hv in ${VirtType}; do
             xl create ./configs/CentOS-${Rel}-${Arch}-xen-${hv}.xen
             flag=0
             while [ $flag - lt 1 ]; do
+                # we should really set static mac's in the config files and check for those here, this is a serious hack
                 while [ ! -e /var/lib/dnsmasq/dnsmasq.leases || `cat /var/lib/dnsmasq/dnsmasq.leases | wc -l ` -lt 1 ]; do
                     sleep 1
                 done
@@ -37,6 +38,8 @@ for hv in ${VirtType}; do
             done
             echo | nc ${IP} 22 | grep SSH > /dev/null 2>&1
             Result=$?
+            xl destroy "c${Rel}-${Arch}-${hv}"
+            sleep 5
         done
     done
 done

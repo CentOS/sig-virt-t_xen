@@ -3,10 +3,10 @@ ImgBaseURL="http://cloud.centos.org/centos"
 # we use these MD5's to verify that the image we have,
 # is the one we thought we were going to get
 # currently not used, since we dont save the downloaded file
-C6-64-pv-MD5="aa40c5b5d9b7f83d956619aed02eeeb1"
-C6-32-pv-MD5="8aa89fd7c9160470a14fe22cea631a72"
-C5-64-pv-MD5="5bb186cc929c79d92f26fa75407ba7fe"
-C5-32-pv-MD5="15c3414a69a794dc2121dd604e2c5a06"
+C6x86_64pvMD5="aa40c5b5d9b7f83d956619aed02eeeb1"
+C6i386pvMD5="8aa89fd7c9160470a14fe22cea631a72"
+C5x86_64pvMD5="5bb186cc929c79d92f26fa75407ba7fe"
+C5i386-pvMD5="15c3414a69a794dc2121dd604e2c5a06"
 
 # only attempt the hvm tests if the host is capable of
 if [ `egrep " vmx | svm " /proc/cpuinfo | wc -l ` -gt 0 ]; then

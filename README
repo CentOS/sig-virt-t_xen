@@ -1,4 +1,40 @@
-just a simple test suite to ensure we can convert a CentOS-6/x86_64 machine instance into a Xen Dom0 and instantiate CentOS-5 and CentOS-6 VM's for 32bit and 64bit x86 in paravirt and hvm modes.
+Just a simple test suite to ensure we can convert a CentOS-6/x86_64 machine instance into a Xen Dom0 and instantiate CentOS-5 and CentOS-6 VM's for 32bit and 64bit x86 in paravirt and hvm modes.
 
 The base tests only run inside a VirtualMachine at http://ci.dev.centos.org/ and therefore the initial focus is on the paravirt images.
+
+----
+How this works:
+- t_xen.sh script needs to be called as:
+  ./t_xen.sh <ip|hostname>
+  this script will login to the machine, setup a few basic things and rsync the 
+  test suite content over to the remote machine, upgrade the machine to the latest
+  updates released on mirror.centos.org and reboot the machine ( after setting up
+  the install-xen.sh script to run post boot )
+- the install-xen.sh script will install the centos-release-xen package, setup
+  xen dom0 to boot next and reboot the machine ( after setting up the runtests.sh
+  script to run post-bootup )
+- runtests.sh is considered stage-3, and is where all the sanity testing as well as
+  running instances of the various centos vm images takes place. Its split out into
+  its own script to make it easier to run on its own ( eg. when we dont need the 
+  environ prep done in the previous stages. ) 
+
+----
+The Test assertion / confidence:
+
+The reason why we are doing this, nightly, is to build confidence around the CentOS
+xen4centos repos, around the CentOS update packages and the mirror / repo sanity for
+xen4centos. We are only running the stable released xen4centos code on the test suite.
+
+----
+Extending the tests 
+
+
+
+----
+Running these tests offline
+
+
+
+----
+Running these tests on your own machine / laptop
 

@@ -19,6 +19,9 @@ iptables -I INPUT -i br1 -j ACCEPT
 # we need to set selinux off for now ( reconfirm?)
 /usr/sbin/setenforce 0
 
+# stop xend, since we are going to use xl
+/sbin/service xend stop
+
 for hv in ${VirtType}; do
 #   for Rel in 5 6; do
     for Rel in 6; do

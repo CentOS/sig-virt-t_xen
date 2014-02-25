@@ -1,0 +1,14 @@
+# Things we need to get done
+# - need a set of prebuilt images ( and xen configs ) for:
+# --- PV:
+#		CentOS-5/i386
+#		CentOS-5/x86_64
+#		CentOS-6/i386
+#		CentOS-6/x86_64
+#
+# --- HVM:
+#		CentOS-5/i386
+#		CentOS-5/x86_64
+#		CentOS-6/i386
+#		CentOS-6/x86_64
+# - consider running t_functional in every instance ( maybe the leightweight branch )

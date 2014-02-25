@@ -1,6 +1,6 @@
-name = "c65-64-pv-q"
+name = "c6-x86_64-pv"
 memory = "512"
-disk = [ '/tmp/C6-64-pv.qcow2,qcow2,xvda,rw' ]
+disk = [ '/tmp/c6-x86_64-xen-pv,qcow2,xvda,rw' ]
 vif = [ 'bridge=br1', ]
 bootloader="/usr/lib/xen/bin/pygrub"
 vcpus=1

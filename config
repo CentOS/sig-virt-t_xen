@@ -1,7 +1,8 @@
-ImgBaseURL="http://cloud.centos.org/centos/6/devel/"
+ImgBaseURL="http://cloud.centos.org/centos"
 
 # we use these MD5's to verify that the image we have,
 # is the one we thought we were going to get
+# currently not used, since we dont save the downloaded file
 C6-64-pv-MD5="aa40c5b5d9b7f83d956619aed02eeeb1"
 C6-32-pv-MD5="8aa89fd7c9160470a14fe22cea631a72"
 C5-64-pv-MD5="5bb186cc929c79d92f26fa75407ba7fe"
@@ -17,7 +18,6 @@ fi
 # see if there is a config.local, and if so source it last
 # allows people to set local defaults that wont get whacked
 # on git pulls' 
-# note: never checkin in a config.local into git
 if [ -e config.local ]; then 
 	. config.local
 fi

@@ -12,8 +12,11 @@ ${RemoteCmd} "yum -y install curl dnsmasq bridge-utils ntpdate openssh-clients"
 ${RemoteCmd} "ntpdate 0.centos.pool.ntp.org"
 ${RemoteCmd} "yum -y upgrade"
 cat configs/install-xen.cron  | ${RemoteCmd} "crontab -u root -e"
+
 ${RemoteCmd} "reboot"
+
+# wait for the machine to come back
 
 # scp the entire set of files from this dir to there 
 
-# login to the remote machine and run the tests
+${RemoteCmd} "reboot"

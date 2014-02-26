@@ -1,3 +1,7 @@
+#
+# This is a very basic ks, it -really- needs to be trimmed down
+# from the 320MB qcow2 it results in to ~ 120MB
+#
 install
 url --url=http://mirror.centos.org/centos/6/os/i386/
 lang en_US.UTF-8

@@ -4,19 +4,10 @@ The base tests only run inside a VirtualMachine at http://ci.dev.centos.org/ and
 
 ----
 How this works:
-- t_xen.sh script needs to be called as:
+* t_xen.sh script needs to be called as:
   ./t_xen.sh <ip|hostname>
-  this script will login to the machine, setup a few basic things and rsync the 
-  test suite content over to the remote machine, upgrade the machine to the latest
-  updates released on mirror.centos.org and reboot the machine ( after setting up
-  the install-xen.sh script to run post boot )
-- the install-xen.sh script will install the centos-release-xen package, setup
-  xen dom0 to boot next and reboot the machine ( after setting up the runtests.sh
-  script to run post-bootup )
-- runtests.sh is considered stage-3, and is where all the sanity testing as well as
-  running instances of the various centos vm images takes place. Its split out into
-  its own script to make it easier to run on its own ( eg. when we dont need the 
-  environ prep done in the previous stages. ) 
+  this script will login to the machine, setup a few basic things and rsync the test suite content over to the remote machine, upgrade the machine to the latest updates released on mirror.centos.org and reboot the machine into Xen4CentOS
+* runtests.sh is considered stage-2, and is where all the sanity testing as well as running instances of the various centos vm images takes place. Its split out into its own script to make it easier to run on its own ( eg. when we dont need the environ prep done in the previous stages. ) 
 
 ----
 The Test assertion / confidence:
@@ -38,3 +29,9 @@ Running these tests offline
 ----
 Running these tests on your own machine / laptop
 
+----
+Interesting things to keep in mind
+
+* we are only using xl ( xend is shutdown by the scripts ); lets add some xm tests as well 
+* the VM images being used for the tests are -seriously- overweight, we need to trim those down massively to make this productive
+* we dont sanity test the vm images that come up under xen, the only real assert here is for ssh working on the ip we think it should be running on, we should try and extend this a bit to include actual in-vm tests as well ( the lightweight branch of the t_functional suite might be a good candidate here )

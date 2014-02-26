@@ -19,15 +19,13 @@ xen4centos. We are only running the stable released xen4centos code on the test 
 ----
 Extending the tests 
 
-
+The main repo used in 'production' is hosted at : https://git.centos.org/summary/sig-virt!t_xen.git and a github mirror is hosted at : https://github.com/CentOS/sig-virt-t_xen ; please clone and Merge Request on the github.com interface and one of the CentOS QA folks will mirror the content over to git.centos.org. Conversations about this tests are welcome on either the #centos-devel or the #centos-virt irc channels on irc.centos.org alternatively the CentOS-Virt mailing list at http://lists.centos.org/mailman/listinfo/centos-virt
 
 ----
 Running these tests offline
 
+These tests should just-work anywhere, its a case of git clone the repo, ensure the config file has what you want, and run it with ./t_xen.sh <ip>; where <ip> points to the machine you want these to run on. The tests assume a CentOS-6-Minimal-x86_64 install ( which isnt currently running the Xen kernel ).
 
-
-----
-Running these tests on your own machine / laptop
 
 ----
 Interesting things to keep in mind

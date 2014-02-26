@@ -1,6 +1,6 @@
 name = "c6-x86_64-pv"
 memory = "512"
 disk = [ '/tmp/c6-x86_64-xen-pv,qcow2,xvda,rw' ]
-vif = [ 'bridge=br1', ]
+vif = [ 'mac=00:00:00:00:00:11,bridge=br1', ]
 bootloader="/usr/lib/xen/bin/pygrub"
 vcpus=1

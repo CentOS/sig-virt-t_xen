@@ -1,6 +1,10 @@
 #
 # This is a very basic ks, it -really- needs to be trimmed down
 # from the 320MB qcow2 it results in to ~ 120MB
+# 
+# if we are going to run tests inside the VM ( we should) then
+# there would be a need to also inject a ssh pubkey at image
+# build time, so would need to go here in the ks
 #
 install
 url --url=http://mirror.centos.org/centos/6/os/i386/
@@ -22,11 +26,9 @@ reboot
 %packages
 @core
 %end
-%post --nochroot
-sed -i '/HWADDR/d' /mnt/sysimage/etc/sysconfig/network-scripts/ifcfg-eth\*
-for f in /boot/grub/grub.conf; do
-  /bin/sed -i "s/^serial.*$//" /mnt/sysimage/${f}
-  /bin/sed -i "s/^terminal.*$//" /mnt/sysimage/${f}
-  /bin/sed -i "s/console=ttyS0,115200/console=hvc0/" /mnt/sysimage/${f}
-done
+%post
+/bin/sed -i '/HWADDR/d' /etc/sysconfig/network-scripts/ifcfg-eth\*
+/bin/sed -i "s/^serial.*$//" /boot/grub/grub.conf
+/bin/sed -i "s/^terminal.*$//" /boot/grub/grub.conf
+/bin/sed -i "s/console=ttyS0,115200/console=hvc0/" /boot/grub/grub.conf
 %end

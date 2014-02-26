@@ -12,7 +12,7 @@ brctl addbr br1
 ip link set dev br1 up
 ip addr add dev br1 192.168.10.1/24
 
-cp configs/t_xen-dnsmasq.conf /etc/dnsmasq.d/
+cat  configs/t_xen-dnsmasq.conf  >> /etc/dnsmasq.conf
 service dnsmasq restart
 iptables -I INPUT -i br1 -j ACCEPT
 
@@ -23,31 +23,35 @@ iptables -I INPUT -i br1 -j ACCEPT
 /sbin/service xend stop
 
 for hv in ${VirtType}; do
-#   for Rel in 5 6; do
-    for Rel in 6; do
-        #for Arch in i386 x86_64; do
-        for Arch in x86_64; do
-            echo $Rel $Arch
-            curl ${ImgBaseURL}/${Rel}/devel/CentOS-${Rel}-${Arch}-xen-${hv}.bz2 | bunzip2 > /tmp/c${Rel}-${Arch}-xen-${hv}
-            xl create ./configs/CentOS-${Rel}-${Arch}-xen-${hv}.xen
+    for Rel in ${Releases}; do
+        for Arch in ${Arches}; do
+            date
+            echo 'Going to test : ' $Rel $Arch
+            InstName=CentOS-${Rel}-${Arch}-xen-${hv}
+            echo curl ${ImgBaseURL}/${Rel}/devel/${InstName}.bz2 
+            curl ${ImgBaseURL}/${Rel}/devel/${InstName}.bz2 | bunzip2 > /tmp/c${Rel}-${Arch}-xen-${hv}
+            xl destroy "c${Rel}-${Arch}-${hv}" 
+            xl create ./configs/${InstName}.xen
             flag=0
-            while [ $flag - lt 1 ]; do
-                # we should really set static mac's in the config files and check for those here, this is a serious hack
-                while [ ! -e /var/lib/dnsmasq/dnsmasq.leases || `cat /var/lib/dnsmasq/dnsmasq.leases | wc -l ` -lt 1 ]; do
-                    sleep 1
+            while [ $flag -lt 1 ]; do
+                MAC=$(cat ./configs/${InstName}.xen | grep vif | sed -e 's/.*mac=//g' | cut -f1 -d',')
+                while [ ! -e /var/lib/dnsmasq/dnsmasq.leases ] || [ `grep ${MAC} /var/lib/dnsmasq/dnsmasq.leases | wc -l ` -lt 1 ]; do
+                    echo -n '.'; sleep 1
                 done
-                IP=$(cat cat /var/lib/dnsmasq/dnsmasq.leases | tail -n1 | cut -f 3 -d\ )
-                sleep 5
+                IP=$(cat /var/lib/dnsmasq/dnsmasq.leases | grep ${MAC} | cut -f 3 -d\ )
+                echo 'Got IP' ${IP}
+                sleep 15
+                flag=1
             done
-            echo | nc ${IP} 22 | grep SSH > /dev/null 2>&1
+            #echo | nc ${IP} 22 | grep SSH > /dev/null 2>&1
+            ssh-keyscan ${IP} | grep rsa > /dev/null 2>&1
             Result=$?
+            if [ $Result -ne 0 ]; then
+                # exit here, leave system state
+                exit $Result
+            fi
             xl destroy "c${Rel}-${Arch}-${hv}"
             sleep 5
         done
     done
 done
-
-# this is only going to give us the result for the last VM instantiated
-# maybe we want to not run all of them in 1 script, but have Jenkins
-# start one test run per Image we want to test(?)
-exit $Result

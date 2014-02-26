@@ -5,6 +5,7 @@
 
 # XXX: Make sure we have enough resources
 #      need 4gb of ram and enough disk space
+#       also make sure xen hv is really running
 
 # we should also test if a 192 ip exists on the machine, bad things
 # could happen if we setup a bridge

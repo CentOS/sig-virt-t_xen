@@ -8,9 +8,9 @@ RemoteCmd="ssh -t ${TestHost} -l root"
 # make sure we can login to ${TestHost}
 
 # setup some baseline stuff
+${RemoteCmd} "yum -y install centos-release-xen && yum -y install xen"
 ${RemoteCmd} "yum -y upgrade && yum -y install curl dnsmasq bridge-utils ntpdate openssh-clients rsync nc"
 ${RemoteCmd} "ntpdate 0.centos.pool.ntp.org"
-${RemoteCmd} "yum -y install centos-release-xen && yum -y install xen"
 ${RemoteCmd} "/usr/bin/grub-bootxen.sh"
 ${RemoteCmd} "reboot"
 
@@ -31,5 +31,4 @@ ${RemoteCmd} "mkdir ~/t_xen"
 rsync --exclude =".git/*" -PHvar * root@${TestHost}:t_xen/
 
 # run it
-
 ${RemoteCmd} "cd t_xen; ./runtests.sh"

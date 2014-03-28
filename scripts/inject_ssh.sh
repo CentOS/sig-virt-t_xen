@@ -30,7 +30,7 @@ d=$(mktemp -d)
 ${Qemu} -c /dev/nbd0 ${1} 
 ${probe} /dev/nbd0
 mount /dev/nbd0p2 ${d}
-if [ $? -eq 0 ];
+if [ $? -eq 0 ]; then
 	mkdir -m 700 ${d}/root/.ssh
 	echo ${2} >> ${d}/root/.ssh/authorized_keys
 	chmod 600 ${d}/root/.ssh/authorized_keys
@@ -38,5 +38,5 @@ if [ $? -eq 0 ];
 	echo "restorecon -R /root/.ssh" >> ${d}/etc/rc.d/rc.local
 fi
 umount ${d}
-${Qemu} -d {1}
+${Qemu} -d ${1}
 exit 0
